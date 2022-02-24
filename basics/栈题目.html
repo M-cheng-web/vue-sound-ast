@@ -44,7 +44,8 @@
             // 让指针后移，word这个词语是多少位就后移多少位
             index += word.length;
           } else if (rest[0] == "]") {
-            // 如果这个字符是]，那么就①将stack1弹栈，②stack2弹栈，③把字符串栈的新栈顶的元素重复刚刚弹出的那个字符串指定次数拼接到新栈顶上。
+            // 如果这个字符是]，那么就①将stack1弹栈，②stack2弹栈，
+            // ③把字符串栈的新栈顶的元素重复刚刚弹出的那个字符串指定次数拼接到新栈顶上。
             let times = stack1.pop();
             let word = stack2.pop();
             // repeat是ES6的方法，比如'a'.repeat(3)得到'aaa'
@@ -52,15 +53,50 @@
             index++;
           }
 
-          console.log(index, stack1, stack2);
+          // console.log(index, stack1, stack2);
         }
 
-        // while结束之后，stack1和stack2中肯定还剩余1项。返回栈2中剩下的这一项，重复栈1中剩下的这1项次数，组成的这个字符串。如果剩的个数不对，那就是用户的问题，方括号没有闭合。
+        // while结束之后，stack1和stack2中肯定还剩余1项。返回栈2中剩下的这一项，
+        // 重复栈1中剩下的这1项次数，组成的这个字符串。如果剩的个数不对，那就是用户的问题，方括号没有闭合。
         return stack2[0].repeat(stack1[0]);
       }
 
-      var result = smartRepeat("3[2[3[a]1[b]]4[d]]");
+      var result = smartRepeat("2[1[a]3[b]2[3[c]4[d]]]");
       console.log(result);
+    </script>
+
+    <script>
+      const str = "2[1[a]3[b]2[3[c]4[d]]]";
+
+      function smartRepeat(str) {
+        const numArr = [];
+        const strArr = [];
+
+        str.split("").forEach((item) => {
+          if (/\d/.test(item)) {
+            numArr.push(item);
+            strArr.push("");
+          } else if (/[a-zA-Z]/.test(item)) {
+            strArr[strArr.length - 1] = item;
+          } else if (item === "[") {
+          } else if (item === "]") {
+            let letter = strArr.pop();
+            let num = numArr.pop();
+
+            if (strArr.length > 0) {
+              strArr[strArr.length - 1] += letter.repeat(num);
+            } else {
+              strArr.push(letter.repeat(num));
+            }
+          } else {
+            throw new Error("非法字符串");
+          }
+        });
+
+        return strArr[0];
+      }
+
+      console.log(smartRepeat(str));
     </script>
   </body>
 </html>

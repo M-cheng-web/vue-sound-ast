@@ -1,39 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        // 试输出斐波那契数列的前10项，即1、1、2、3、5、8、13、21、34、55
+      // 试输出斐波那契数列的前10项，即1、1、2、3、5、8、13、21、34、55
 
-        // 缓存对象
-        var cache = {};
+      // 缓存对象
+      var cache = {};
 
-        // 创建一个函数，功能是返回下标为n的这项的数字
-        function fib(n) {
-            // 判断缓存对象中有没有这个值，如果有，直接用
-            if (cache.hasOwnProperty(n)) {
-                return cache[n];
-            }
-            // 缓存对象没有这个值
-            // 看下标n是不是0或者是不是1，如果是，就返回常数1
-            // 如果不是，就递归
-            var v = n == 0 || n == 1 ? 1 : fib(n - 1) + fib(n - 2);
-            // 写入缓存。也就是说，每算一个值，就要把这个值存入缓存对象。
-            cache[n] = v;
-            return v;
+      // 创建一个函数，功能是返回下标为n的这项的数字
+      function fib(n) {
+        // 判断缓存对象中有没有这个值，如果有，直接用
+        if (cache.hasOwnProperty(n)) {
+          return cache[n];
         }
+        // 缓存对象没有这个值
+        // 看下标n是不是0或者是不是1，如果是，就返回常数1
+        // 如果不是，就递归
+        var v = n == 0 || n == 1 ? 1 : fib(n - 1) + fib(n - 2);
+        // 写入缓存。也就是说，每算一个值，就要把这个值存入缓存对象。
+        cache[n] = v;
+        return v;
+      }
 
-        for (let i = 0; i <= 9; i++) {
-            console.log(fib(i));
-        }
-
+      for (let i = 0; i <= 9; i++) {
+        console.log(fib(i));
+      }
     </script>
-</body>
+    <script>
+      function fib(
+        num,
+        retArr = false,
+        startNum = num - 1,
+        cache = [],
+        minus = true
+      ) {
+        if (minus) num = num - 1;
+        if (cache[num]) return cache[num];
+        const v =
+          num === 0 || num === 1
+            ? 1
+            : fib(num - 1, retArr, startNum, cache, false) +
+              fib(num - 2, retArr, startNum, cache, false);
+        cache[num] = v;
+        if (retArr && num === startNum) return cache;
+        return v;
+      }
 
+      console.log(fib(10, false));
+
+      // 注意点
+      // 1. 斐波那契数列第0项是0,但是这个数列是从1开始的,0并不算在内(维基百科)
+      // 2. fib(10) 代表我们想要斐波那契数列的第十项,而数组是从0位开始的,它的第十项实际上是数组的下标为9的那个值
+      //    所以需要在这里加上初始 -1 的操作
+      // 3. retArr 代表是否需要返回数组
+    </script>
+  </body>
 </html>
